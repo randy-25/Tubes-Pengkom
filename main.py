@@ -39,3 +39,5 @@ print(dijkstraAkhir)
 
 print(1000000)
 print(100)
+
+print("hhhhhh")
