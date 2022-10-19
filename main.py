@@ -38,4 +38,4 @@ for i in range (vertices):
 print(dijkstraAkhir)
 
 print(1000000)
-
+print(100)
