@@ -37,4 +37,5 @@ for i in range (vertices):
  
 print(dijkstraAkhir)
 
-print("x")
+print(1000000)
+print(100)
