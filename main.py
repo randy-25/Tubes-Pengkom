@@ -36,5 +36,6 @@ for i in range (vertices):
         dijkstraAkhir[i] = dijkstraAwal[i]
  
 print(dijkstraAkhir)
-print(a)
+
+print(1000000)
 
