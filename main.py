@@ -23,10 +23,24 @@ map = [[0, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 250, 150, 0, 0, 200, 150, 0, 0,50],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0]]
 
+def mapFinal(vertices) :
+    mapFinal = graphMaker(vertices)
+
+    print("\nKecepatan rata-rata kendaraan pada jalan berdasarkan keramaian: ")
+    
+    for i in range(vertices) :
+        for j in range(vertices) :
+            if (map[i][j] != 0 and mapFinal[i][j] == 0) :
+                roadAVGSpeed = int(input("Kecepatan rata-rata di titik " + str(i) + " ke " + str(j) + " (dalam km/jam): ")) * 1000 / 3600
+                mapFinal[i][j] = int(map[i][j] / roadAVGSpeed)
+                mapFinal[j][i] = mapFinal[i][j]
+    
+    return mapFinal
+
 lokasiOjek = tempatOjek(vertices)
 print(lokasiOjek)
 lokasiPenumpang = int(input("Masukkan node ke berapa penumpang berada : "))
-dijkstraAwal = dijkstra(lokasiPenumpang,vertices,map)
+dijkstraAwal = dijkstra(lokasiPenumpang,vertices,mapFinal(vertices))
 dijkstraAkhir = [0 for i in range(vertices)]
 print(dijkstraAwal)
 for i in range (vertices):
