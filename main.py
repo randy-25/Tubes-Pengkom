@@ -36,8 +36,3 @@ for i in range (vertices):
         dijkstraAkhir[i] = dijkstraAwal[i]
  
 print(dijkstraAkhir)
-
-print(1000000)
-print(100)
-
-print("hhhhhh")
