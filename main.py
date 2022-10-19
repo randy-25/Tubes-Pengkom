@@ -28,4 +28,3 @@ for i in range (vertices):
         dijkstraAkhir[i] = dijkstraAwal[i]
  
 print(dijkstraAkhir)
-
