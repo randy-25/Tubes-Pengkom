@@ -47,12 +47,28 @@ def mapFinal(vertices) :
     
     return mapFinal
 
+def ojekCount() :
+    count = 0
+    for i in lokasiOjek :
+        if (i != 0) :
+            count += i
+    return count
+
 lokasiOjek = tempatOjek(vertices)
-print(lokasiOjek)
+
 lokasiPenumpang = int(input("Masukkan node ke berapa penumpang berada : "))
+print("Terdapat " + str(ojekCount()) + " ojek di sekitar.\n")
+
+print("Array jumlah ojek di setiap node:")
+print(lokasiOjek)
+print("")
+
 dijkstraAwal = dijkstra(lokasiPenumpang,vertices,mapFinal(vertices))
 dijkstraAkhir = [0 for i in range(vertices)]
+
+print("Jarak setiap node ke titik penumpang:")
 print(dijkstraAwal)
+print("")
 
 def zeroMaker(dijkstraInitial, dijkstraFinal) :
     for i in range (vertices):
@@ -63,14 +79,10 @@ def zeroMaker(dijkstraInitial, dijkstraFinal) :
     return dijkstraFinal
 
 dijkstraAkhir = zeroMaker(dijkstraAwal, dijkstraAkhir)
-print(dijkstraAkhir)
 
-def ojekCount() :
-    count = 0
-    for i in lokasiOjek :
-        if (i != 0) :
-            count += i
-    return count
+print("Jarak driver ke titik penumpang:")
+print(dijkstraAkhir)
+print("")
 
 # Deklarasi array untuk driver ojek
 driverName = ['' for i in range(ojekCount())]
@@ -85,7 +97,7 @@ mapDistanceInitial = dijkstra(lokasiPenumpang, vertices, map)
 mapDistanceFinal = [0 for i in range(vertices)]
 mapDistanceFinal = zeroMaker(mapDistanceInitial, mapDistanceFinal)
 
-# Proses input keterangan nama, rating, jarak, dan waktu tempuh
+# Proses mendapat input keterangan nama, rating, jarak, dan waktu tempuh
 for i in range(vertices) :
     if (lokasiOjek[i] != 0) :
         for j in range(lokasiOjek[i]) :
@@ -95,13 +107,33 @@ for i in range(vertices) :
             driverRating[driverIndex] = float(ratingTextInput[driverIndex])
             driverTime[driverIndex] = dijkstraAkhir[i]
             driverDistance[driverIndex] = mapDistanceFinal[i]
+            driverScore[driverIndex] = driverRating[driverIndex] + 1 / driverTime[driverIndex]
             driverIndex += 1
+
+def getBestIndex() :
+    temp = 0
+    for i in range(ojekCount()) :
+        if driverScore[i] > driverScore[temp] :
+            temp = i
+    return temp
+
+if driverTime[getBestIndex()] < 60 :
+    strTime = "< 1 menit"
+else :
+    strTime = "+-" + str(driverTime[getBestIndex()] // 60) + " menit"
 
 def ojekku(int) :
     print("Nama Driver  : " + str(driverName[int]), end='')
-    print("Rating       : " + str(driverRating[int]))
+    print("Rating       : " + str(driverRating[int]) + "/5")
     print("Waktu tempuh : " + str(driverTime[int]) + "s")
     print("Jarak        : " + str(driverDistance[int]) + "m")
+    print("Overall score: " + str(driverScore[int]) + "/6") 
+
+print("")
+
+print("Driver terbaik untukmu: " + str(driverName[getBestIndex()]), end='')
+print("Berjarak " + str(driverDistance[getBestIndex()]) + "m dari kamu dan memiliki rating " + str(driverRating[getBestIndex()]) + "/5")
+print("Estimasi waktu sampai: " + strTime)
 
 print("")
 
