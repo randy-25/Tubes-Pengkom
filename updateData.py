@@ -17,12 +17,15 @@ for i in range(vertices) :
 # print(jumlah)
 # print(driverName)
 # print(driverRating)
+confirmInput = input("Perbarui data? (YA / TIDAK) : ")
+if confirmInput == "YA" :
+    with open('jumlah ojek.txt', 'w') as a :
+        a.write(jumlah)
 
-with open('jumlah ojek.txt', 'w') as a :
-    a.write(jumlah)
+    with open('namaOjek.txt', 'w') as a :
+        a.write(driverName)
 
-with open('namaOjek.txt', 'w') as a :
-    a.write(driverName)
-
-with open('ratingOjek.txt', 'w') as a :
-    a.write(driverRating)
+    with open('ratingOjek.txt', 'w') as a :
+        a.write(driverRating)
+else :
+    print("Closing program...")
