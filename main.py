@@ -28,8 +28,7 @@ with open('keramaian.txt') as f:
 
 def mapFinal(vertices) :
     mapFinal = graphMaker(vertices)
-
-    print("\nKecepatan rata-rata kendaraan pada jalan berdasarkan keramaian: ")
+    #print("\nKecepatan rata-rata kendaraan pada jalan berdasarkan keramaian: ")
     count = 0
     for i in range(vertices) :
         for j in range(vertices) :
@@ -48,12 +47,16 @@ lokasiPenumpang = int(input("Masukkan node ke berapa penumpang berada : "))
 dijkstraAwal = dijkstra(lokasiPenumpang,vertices,mapFinal(vertices))
 dijkstraAkhir = [0 for i in range(vertices)]
 print(dijkstraAwal)
-for i in range (vertices):
-    if lokasiOjek[i] == 0:
-        dijkstraAkhir[i] = 0
-    else :
-        dijkstraAkhir[i] = dijkstraAwal[i]
- 
+
+def zeroMaker(dijkstraInitial, dijkstraFinal) :
+    for i in range (vertices):
+        if lokasiOjek[i] == 0:
+            dijkstraFinal[i] = 0
+        else :
+            dijkstraFinal[i] = dijkstraInitial[i]
+    return dijkstraFinal
+
+dijkstraAkhir = zeroMaker(dijkstraAwal, dijkstraAkhir)
 print(dijkstraAkhir)
 
 def ojekCount() :
@@ -65,11 +68,16 @@ def ojekCount() :
 
 # Deklarasi array untuk driver ojek
 driverName = ['' for i in range(ojekCount())]
+driverTime = ['' for i in range(ojekCount())]
 driverDistance = ['' for i in range(ojekCount())]
 driverRating = ['' for i in range(ojekCount())]
 driverScore = ['' for i in range(ojekCount())]
 
 driverIndex = 0
+
+mapDistanceInitial = dijkstra(lokasiPenumpang, vertices, map)
+mapDistanceFinal = [0 for i in range(vertices)]
+mapDistanceFinal = zeroMaker(mapDistanceInitial, mapDistanceFinal)
 
 # Proses input keterangan nama, rating, jarak, dan waktu tempuh
 for i in range(vertices) :
@@ -77,10 +85,19 @@ for i in range(vertices) :
         for j in range(lokasiOjek[i]) :
             driverName[driverIndex] = input("Nama driver " + str(j + 1) + " di node " + str(i) + ": ")
             driverRating[driverIndex] = float(input("Rating: "))
-            driverDistance[driverIndex] = dijkstraAkhir[i]
+            driverTime[driverIndex] = dijkstraAkhir[i]
+            driverDistance[driverIndex] = mapDistanceFinal[i]
             driverIndex += 1
 
 def ojekku(int) :
-    print(driverName[int])
-    print(driverRating[int])
-    print(driverDistance[int])
+    print("Nama Driver: " + str(driverName[int]))
+    print("Rating: " + str(driverRating[int]))
+    print("Waktu tempuh: " + str(driverTime[int]) + "s")
+    print("Jarak: " + str(driverDistance[int]) + "m")
+
+print("")
+
+while True :
+    inputIndex = int(input("Cari Ojek: "))
+    ojekku(inputIndex)
+    print("")
