@@ -63,6 +63,7 @@ def ojekCount() :
             count += i
     return count
 
+# Deklarasi array untuk driver ojek
 driverName = ['' for i in range(ojekCount())]
 driverDistance = ['' for i in range(ojekCount())]
 driverRating = ['' for i in range(ojekCount())]
@@ -70,6 +71,7 @@ driverScore = ['' for i in range(ojekCount())]
 
 driverIndex = 0
 
+# Proses input keterangan nama, rating, jarak, dan waktu tempuh
 for i in range(vertices) :
     if (lokasiOjek[i] != 0) :
         for j in range(lokasiOjek[i]) :
