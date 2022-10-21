@@ -26,6 +26,12 @@ map = [[0, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 with open('keramaian.txt') as f:
     roadTextInput = f.readlines()
 
+with open('namaOjek.txt') as f:
+    nameTextInput = f.readlines()
+
+with open('ratingOjek.txt') as f:
+    ratingTextInput = f.readlines()
+
 def mapFinal(vertices) :
     mapFinal = graphMaker(vertices)
     #print("\nKecepatan rata-rata kendaraan pada jalan berdasarkan keramaian: ")
@@ -83,21 +89,23 @@ mapDistanceFinal = zeroMaker(mapDistanceInitial, mapDistanceFinal)
 for i in range(vertices) :
     if (lokasiOjek[i] != 0) :
         for j in range(lokasiOjek[i]) :
-            driverName[driverIndex] = input("Nama driver " + str(j + 1) + " di node " + str(i) + ": ")
-            driverRating[driverIndex] = float(input("Rating: "))
+            # driverName[driverIndex] = input("Nama driver " + str(j + 1) + " di node " + str(i) + ": ")
+            # driverRating[driverIndex] = float(input("Rating: "))
+            driverName[driverIndex] = nameTextInput[driverIndex]
+            driverRating[driverIndex] = float(ratingTextInput[driverIndex])
             driverTime[driverIndex] = dijkstraAkhir[i]
             driverDistance[driverIndex] = mapDistanceFinal[i]
             driverIndex += 1
 
 def ojekku(int) :
-    print("Nama Driver: " + str(driverName[int]))
-    print("Rating: " + str(driverRating[int]))
-    print("Waktu tempuh: " + str(driverTime[int]) + "s")
-    print("Jarak: " + str(driverDistance[int]) + "m")
+    print("Nama Driver  : " + str(driverName[int]), end='')
+    print("Rating       : " + str(driverRating[int]))
+    print("Waktu tempuh : " + str(driverTime[int]) + "s")
+    print("Jarak        : " + str(driverDistance[int]) + "m")
 
 print("")
 
 while True :
-    inputIndex = int(input("Cari Ojek: "))
+    inputIndex = int(input("Cari Ojek    : "))
     ojekku(inputIndex)
     print("")
