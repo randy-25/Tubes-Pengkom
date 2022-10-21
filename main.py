@@ -66,7 +66,7 @@ print("")
 dijkstraAwal = dijkstra(lokasiPenumpang,vertices,mapFinal(vertices))
 dijkstraAkhir = [0 for i in range(vertices)]
 
-print("Jarak setiap node ke titik penumpang:")
+print("Waktu tempuh dari setiap node ke titik penumpang (dalam s):")
 print(dijkstraAwal)
 print("")
 
@@ -80,7 +80,7 @@ def zeroMaker(dijkstraInitial, dijkstraFinal) :
 
 dijkstraAkhir = zeroMaker(dijkstraAwal, dijkstraAkhir)
 
-print("Jarak driver ke titik penumpang:")
+print("Waktu tempuh driver ke titik penumpang (dalam s):")
 print(dijkstraAkhir)
 print("")
 
@@ -105,8 +105,11 @@ for i in range(vertices) :
             # driverRating[driverIndex] = float(input("Rating: "))
             driverName[driverIndex] = nameTextInput[driverIndex]
             driverRating[driverIndex] = float(ratingTextInput[driverIndex])
-            driverTime[driverIndex] = dijkstraAkhir[i]
             driverDistance[driverIndex] = mapDistanceFinal[i]
+            if dijkstraAkhir[i] == 0 :
+                driverTime[driverIndex] = dijkstraAkhir[i] + 10
+            else :
+                driverTime[driverIndex] = dijkstraAkhir[i]
             driverScore[driverIndex] = driverRating[driverIndex] + 1 / driverTime[driverIndex]
             driverIndex += 1
 
