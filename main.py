@@ -56,8 +56,8 @@ def ojekCount() :
 
 lokasiOjek = tempatOjek(vertices)
 
-lokasiPenumpang = int(input("Masukkan node ke berapa penumpang berada : "))
 print("Terdapat " + str(ojekCount()) + " ojek di sekitar.\n")
+lokasiPenumpang = int(input("Masukkan node ke berapa penumpang berada : "))
 
 print("Array jumlah ojek di setiap node:")
 print(lokasiOjek)
