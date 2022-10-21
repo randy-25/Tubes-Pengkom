@@ -123,7 +123,7 @@ def getBestIndex() :
 if driverTime[getBestIndex()] < 60 :
     strTime = "< 1 menit"
 else :
-    strTime = "+-" + str(driverTime[getBestIndex()] // 60) + " menit"
+    strTime = "+-" + str(driverTime[getBestIndex()] // 60 + 1) + " menit"
 
 def ojekku(int) :
     print("Nama Driver  : " + str(driverName[int]), end='')
