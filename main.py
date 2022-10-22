@@ -1,6 +1,7 @@
 from numpy import true_divide
 from dijkstra import graphMaker, dijkstra
 from tempatOjek import tempatOjek
+from updateData import updateMap, updateSpeed, updateDriver
 import os
 
 vertices = 18
@@ -173,9 +174,28 @@ while True:
         adminUser = input("Username Admin : ")
         adminPass = input("Admin Password : ")
         if adminUser == adminLogin and adminPass == adminPassword :
-            pass
+            os.system('cls')
+            print("Program Mencari Ojek Online Sederhana")
+            print("=====================================\n\n")
+            print("1. Update Map")
+            print("2. Update Keramaian")
+            print("3. Update Driver")
+            print("4. Back")
+            adminChoice = input("Pilihan : ")
+            if adminChoice == "1" :
+                vertices = int(input("Masukkan jumlah titik pada map: "))
+                map = updateMap(vertices)
+            elif adminChoice == "2" :
+                updateSpeed(vertices)
+            elif adminChoice == "3" :
+                updateDriver(vertices)
+            elif adminChoice == "4" :
+                pass
+            else :
+                print("Pilihan Anda Salah")
+                input("Press Enter")
         else :
-            print("invalid Credentials")
+            print("Invalid Credentials")
             input("Press Enter")
     elif loginChoice == "2":
         os.system('cls')
