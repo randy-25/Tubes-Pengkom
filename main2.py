@@ -1,7 +1,8 @@
-from dijkstra import graphMaker, dijkstra
-from tempatOjek import tempatOjek
-from updateData import updateMap, updateSpeed, updateDriver
 import os
+
+def graphMaker(vertices) :
+    graph = [[0 for column in range(vertices)] for row in range(vertices)]
+    return graph
 
 vertices = 18
 map = graphMaker(vertices)
@@ -27,14 +28,6 @@ map = [[0, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 with open('jumlah ojek.txt') as jumlahOjekFile:
     ojekTextInput = jumlahOjekFile.readlines()
 
-def tempatOjek(vertices) :
-    arrayOjek = [0 for i in range (vertices)]
-    for i in range (vertices) :
-        #jumlah = int(input(f"Masukkan jumlah ojek di node ke-{i}: "))
-        jumlah = int(ojekTextInput[i])
-        arrayOjek[i] = jumlah
-    return arrayOjek
-
 with open('keramaian.txt') as keramaianFile:
     roadTextInput = keramaianFile.readlines()
 
@@ -43,6 +36,61 @@ with open('namaOjek.txt') as namaOjekFile:
 
 with open('ratingOjek.txt') as ratingOjekFile:
     ratingTextInput = ratingOjekFile.readlines()
+
+def minDistance(dist,sptSet,vertices) :
+    min = 1e7
+    for i in range(vertices) :
+        if dist[i] < min and sptSet[i] == False :
+            min = dist[i] 
+            min_index = i
+    return min_index
+
+
+def dijkstra(src, vertices, map) :
+    dist = [1e7]*vertices
+    dist[src] = 0
+    sptSet = [False] * vertices
+    '''
+    #DEBUG
+    print(sptSet)
+    print(dist)
+    '''
+    for j in range(vertices) :
+        '''
+        #DEBUG
+        print()
+        print(dist)
+        print(sptSet)
+        '''
+        # u pertama pasti sama dengan tempat asal
+        u = minDistance(dist,sptSet,vertices)
+        # DEBUG
+        #print("u = ",u)
+        sptSet[u] = True
+        for k in range(vertices) :
+            '''
+            DEBUG
+            print(f"map[{u}][{k}]", map[u][k])
+            print(f"sptset[{k}]", sptSet[k])
+            print(f"dist[{k}]",dist[k])
+            print(f"dist[{u}] + map[{u}][{k}]", dist[u] + map[u][k])
+            '''
+            
+            if map[u][k] > 0 and sptSet[k] == False and dist[k] > dist[u] + map[u][k] :
+                dist[k] = dist[u] + map[u][k]
+                '''
+                # DEBUG
+                print("jalan")
+                '''
+    return dist
+
+def tempatOjek(vertices) :
+    arrayOjek = [0 for i in range (vertices)]
+    for i in range (vertices) :
+        #jumlah = int(input(f"Masukkan jumlah ojek di node ke-{i}: "))
+        jumlah = int(ojekTextInput[i])
+        arrayOjek[i] = jumlah
+    return arrayOjek
 
 def mapFinal(vertices) :
     mapFinal = graphMaker(vertices)
@@ -152,6 +200,63 @@ def ojekku(int) :
     print("Waktu tempuh : " + str(driverTime[int]) + "s")
     print("Jarak        : " + str(driverDistance[int]) + "m")
     print("Overall score: " + str(driverScore[int]) + "/6")
+
+def updateMap(vertices) : # -- Belum terhubung ke map utama di main.py
+    print("")
+    
+    graph = graphMaker(vertices)
+
+    graphInput1 = 0
+    while graphInput1 != -1 :
+        graphInput1 = int(input("Masukkan titik 1: "))
+        if (graphInput1 != -1) :
+            graphInput2 = int(input("Masukkan titik 2: "))
+            distanceInput = int(input("Masukkan jarak: "))
+            print("")
+            graph[graphInput1][graphInput2] = distanceInput
+            graph[graphInput2][graphInput1] = distanceInput
+
+    return graph
+
+def updateSpeed(vertices) :
+    roadAVGSpeed = ""
+    for i in range(vertices) :
+        for j in range(vertices) :
+            if (map[i][j] != 0 and j > i) :
+                roadAVGSpeed += input("Kecepatan rata-rata di titik " + str(i) + " ke " + str(j) + " (dalam km/jam): ") + "\n"
+    
+    confirmInput = input("Perbarui data driver? (YA / TIDAK) : ")
+
+    if confirmInput == "YA" :
+        with open('keramaian.txt', 'w') as a :
+            a.write(roadAVGSpeed)
+
+def updateDriver(vertices) :
+    driverIndex = 0
+    driverName = ""
+    driverRating = ""
+    jumlah = ""
+    for i in range(vertices) :
+        ojekCount = int(input(f"Masukkan jumlah ojek di node ke-{i}: "))
+        jumlah += str(ojekCount) + "\n"
+        if (ojekCount != 0) :
+            for j in range(ojekCount) :
+                driverName += input("Nama driver " + str(j + 1) + " di node " + str(i) + ": ") + "\n"
+                driverRating += input("Rating: ") + "\n"
+                driverIndex += 1
+        print("")
+
+    confirmInput = input("Perbarui data? (YA / TIDAK) : ")
+
+    if confirmInput == "YA" :
+        with open('jumlah ojek.txt', 'w') as a :
+            a.write(jumlah)
+
+        with open('namaOjek.txt', 'w') as a :
+            a.write(driverName)
+
+        with open('ratingOjek.txt', 'w') as a :
+            a.write(driverRating)
 
 def adminMain(driverName, driverTime, driverDistance, driverRating, driverScore):
     os.system('cls')
@@ -299,4 +404,3 @@ while True:
 
 userLoginFile.close()
 userPasswordFile.close()
-            
