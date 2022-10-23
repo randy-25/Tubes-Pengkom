@@ -192,11 +192,12 @@ def driverDetail(driverName, driverTime, driverDistance, driverRating, driverSco
                 driverName[driverIndex] = nameTextInput[driverIndex]
                 driverRating[driverIndex] = float(ratingTextInput[driverIndex])
                 driverDistance[driverIndex] = mapDistanceFinal[i]
-                if dijkstraAkhir[i] == 0 :
-                    driverTime[driverIndex] = dijkstraAkhir[i] + 10
-                else :
-                    driverTime[driverIndex] = dijkstraAkhir[i]
-                driverScore[driverIndex] = driverRating[driverIndex] + 10 / driverTime[driverIndex]
+                # if dijkstraAkhir[i] == 0 :
+                #     driverTime[driverIndex] = dijkstraAkhir[i] + 10
+                # else :
+                #     driverTime[driverIndex] = dijkstraAkhir[i]
+                driverTime[driverIndex] = dijkstraAkhir[i]
+                driverScore[driverIndex] = driverRating[driverIndex] + 10 / ((driverTime[driverIndex] ** (1/3)) + 10)
                 driverIndex += 1
 
 def userMain(driverName, driverTime, driverDistance, driverRating, driverScore):
@@ -256,7 +257,7 @@ def ojekku(int) :
     print("Rating       : " + str(driverRating[int]) + "/5")
     print("Waktu tempuh : " + str(driverTime[int]) + "s")
     print("Jarak        : " + str(driverDistance[int]) + "m")
-    print("Overall score: " + str(driverScore[int]) + "/6")
+    print("Overall score: " + str(driverScore[int]))
 
 def updateMap(vertices) :
     os.system('cls')
