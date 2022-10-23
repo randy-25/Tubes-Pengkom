@@ -1,29 +1,7 @@
 import os
 
-def graphMaker(vertices) :
-    graph = [[0 for column in range(vertices)] for row in range(vertices)]
-    return graph
-
-vertices = 18
-map = graphMaker(vertices)
-map = [[0, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [250, 0, 50, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 50, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0],
-        [0, 150, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 150, 50, 0, 0, 0, 0, 0, 100, 200, 150, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 50, 0, 0, 100, 150, 150, 100, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 100, 0, 150, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 150, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 150, 50, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 100, 100, 0, 0, 200, 0, 150, 0, 0, 0, 0, 0, 250, 0],
-        [0, 0, 0, 0, 200, 0, 0, 0, 0, 150, 0, 100, 0, 200, 150, 0, 150, 0],
-        [0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 150, 0, 200, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 150, 0, 0, 150, 0, 100, 150, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 250, 150, 0, 0, 200, 150, 0, 0,50],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0]]
+with open('map.txt') as mapFile :
+    mapTextInput = mapFile.readlines()
 
 with open('jumlah ojek.txt') as jumlahOjekFile:
     ojekTextInput = jumlahOjekFile.readlines()
@@ -36,6 +14,44 @@ with open('namaOjek.txt') as namaOjekFile:
 
 with open('ratingOjek.txt') as ratingOjekFile:
     ratingTextInput = ratingOjekFile.readlines()
+
+def graphMaker(vertices) :
+    graph = [[0 for column in range(vertices)] for row in range(vertices)]
+    return graph
+
+def verticesCount(arr) :
+    count = 0
+    x = 0
+    for i in arr :
+        count += 1
+    while (x**2 != count) :
+        x += 1
+    return x
+    
+vertices = verticesCount(mapTextInput)
+map = graphMaker(vertices)
+
+for i in range(vertices**2) :
+    map[i // vertices][i % vertices] = int(mapTextInput[i])
+
+# map = [[0, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#         [250, 0, 50, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#         [0, 50, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0],
+#         [0, 150, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#         [0, 0, 150, 50, 0, 0, 0, 0, 0, 100, 200, 150, 0, 0, 0, 0, 0, 0],
+#         [0, 0, 0, 50, 0, 0, 100, 150, 150, 100, 0, 0, 0, 0, 0, 0, 0, 0],
+#         [0, 0, 0, 0, 0, 100, 0, 150, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#         [0, 0, 0, 0, 0, 150, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#         [0, 0, 0, 0, 0, 150, 50, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0],
+#         [0, 0, 0, 0, 100, 100, 0, 0, 200, 0, 150, 0, 0, 0, 0, 0, 250, 0],
+#         [0, 0, 0, 0, 200, 0, 0, 0, 0, 150, 0, 100, 0, 200, 150, 0, 150, 0],
+#         [0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
+#         [0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 150, 0, 200, 0],
+#         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 150, 0, 0, 150, 0, 100, 150, 0],
+#         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0],
+#         [0, 0, 0, 0, 0, 0, 0, 0, 0, 250, 150, 0, 0, 200, 150, 0, 0,50],
+#         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0]]
 
 def minDistance(dist,sptSet,vertices) :
     min = 1e7
@@ -201,13 +217,16 @@ def ojekku(int) :
     print("Jarak        : " + str(driverDistance[int]) + "m")
     print("Overall score: " + str(driverScore[int]) + "/6")
 
-def updateMap(vertices) : # -- Belum terhubung ke map utama di main.py
-    print("")
-    
+def updateMap(vertices) :
+    os.system('cls')
+    print("Updating Map")
+    print("============\n\n")
+    mapText = ''
     graph = graphMaker(vertices)
 
     graphInput1 = 0
-    while graphInput1 != -1 :
+    while (graphInput1 != -1) :
+        print("Ketik -1 pada titik 1 untuk mengakhiri input")
         graphInput1 = int(input("Masukkan titik 1: "))
         if (graphInput1 != -1) :
             graphInput2 = int(input("Masukkan titik 2: "))
@@ -216,22 +235,39 @@ def updateMap(vertices) : # -- Belum terhubung ke map utama di main.py
             graph[graphInput1][graphInput2] = distanceInput
             graph[graphInput2][graphInput1] = distanceInput
 
-    return graph
+    for i in range(vertices) :
+        for j in range(vertices) :
+            mapText += str(graph[i][j]) + "\n"
+
+    confirmInput = input("Perbarui data map? (YA / TIDAK) : ")
+
+    if confirmInput == "YA" :
+        with open('map.txt', 'w') as mapFile :
+            mapFile.write(mapText)
+    
+    updateSpeed(vertices)
+    updateDriver(vertices)
 
 def updateSpeed(vertices) :
+    os.system('cls')
+    print("Updating Keramaian")
+    print("==================\n\n")
     roadAVGSpeed = ""
     for i in range(vertices) :
         for j in range(vertices) :
             if (map[i][j] != 0 and j > i) :
                 roadAVGSpeed += input("Kecepatan rata-rata di titik " + str(i) + " ke " + str(j) + " (dalam km/jam): ") + "\n"
     
-    confirmInput = input("Perbarui data driver? (YA / TIDAK) : ")
+    confirmInput = input("Perbarui data keramaian? (YA / TIDAK) : ")
 
     if confirmInput == "YA" :
         with open('keramaian.txt', 'w') as a :
             a.write(roadAVGSpeed)
 
 def updateDriver(vertices) :
+    os.system('cls')
+    print("Updating Driver")
+    print("===============\n\n")
     driverIndex = 0
     driverName = ""
     driverRating = ""
@@ -246,7 +282,7 @@ def updateDriver(vertices) :
                 driverIndex += 1
         print("")
 
-    confirmInput = input("Perbarui data? (YA / TIDAK) : ")
+    confirmInput = input("Perbarui data driver? (YA / TIDAK) : ")
 
     if confirmInput == "YA" :
         with open('jumlah ojek.txt', 'w') as a :
@@ -342,7 +378,7 @@ while True:
                 adminChoice = input("Pilihan : ")
                 if adminChoice == "1" :
                     vertices = int(input("Masukkan jumlah titik pada map: "))
-                    map = updateMap(vertices)
+                    updateMap(vertices)
                 elif adminChoice == "2" :
                     updateSpeed(vertices)
                 elif adminChoice == "3" :
