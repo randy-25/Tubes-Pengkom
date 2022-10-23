@@ -19,16 +19,19 @@ def graphMaker(vertices) :
     graph = [[0 for column in range(vertices)] for row in range(vertices)]
     return graph
 
-def verticesCount(arr) :
-    count = 0
+def verticesCount(count) :
     x = 0
-    for i in arr :
-        count += 1
     while (x**2 != count) :
         x += 1
     return x
+
+def arrayLength(arr) :
+    count = 0
+    for i in arr :
+        count += 1
+    return count
     
-vertices = verticesCount(mapTextInput)
+vertices = verticesCount(arrayLength(mapTextInput))
 map = graphMaker(vertices)
 
 for i in range(vertices**2) :
@@ -408,12 +411,12 @@ while True:
             password = input("Masukkan Password : ")
             password += "\n"
             counting = 0
-            for i in range (len(loginUser)) :
+            for i in range (arrayLength(loginUser)) :
                 if user == loginUser[i] and password == passwordUser[i] :
                     userMain(driverName, driverTime, driverDistance, driverRating, driverScore)
                 else :
                     counting += 1
-            if counting >= len(loginUser) :
+            if counting >= arrayLength(loginUser) :
                 print("Invalid Credentials")
                 input("Press Enter")
             else :
