@@ -1,4 +1,3 @@
-from numpy import true_divide
 from dijkstra import graphMaker, dijkstra
 from tempatOjek import tempatOjek
 from updateData import updateMap, updateSpeed, updateDriver
