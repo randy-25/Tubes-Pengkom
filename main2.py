@@ -1,4 +1,5 @@
 import os
+import time
 
 with open('map.txt') as mapFile :
     mapTextInput = mapFile.readlines()
@@ -14,6 +15,39 @@ with open('namaOjek.txt') as namaOjekFile:
 
 with open('ratingOjek.txt') as ratingOjekFile:
     ratingTextInput = ratingOjekFile.readlines()
+
+def loadingScreen(duration) :
+    print("░█████╗░░░░░░░░░░░░██╗███████╗██╗░░██╗")
+    print("██╔══██╗░░░░░░░░░░░██║██╔════╝██║░██╔╝")
+    print("██║░░██║█████╗░░░░░██║█████╗░░█████═╝░")
+    print("██║░░██║╚════╝██╗░░██║██╔══╝░░██╔═██╗░")
+    print("╚█████╔╝░░░░░░╚█████╔╝███████╗██║░╚██╗")
+    print("░╚════╝░░░░░░░░╚════╝░╚══════╝╚═╝░░╚═╝")
+    print("\n               LOADING")
+    animation = [
+        "         [                 ]",
+        "         [=                ]",
+        "         [===              ]",
+        "         [====             ]",
+        "         [=====            ]",
+        "         [======           ]",
+        "         [=======          ]",
+        "         [========         ]",
+        "         [=========        ]",
+        "         [==========       ]",
+        "         [===========      ]",
+        "         [============     ]",
+        "         [=============    ]",
+        "         [==============   ]",
+        "         [===============  ]",
+        "         [================ ]",
+        "         [=================]"
+        ]
+    count = 0
+    for i in animation :
+        print(animation[count % arrayLength(animation)], end='\r')
+        time.sleep(duration / 100)
+        count +=1
 
 def graphMaker(vertices) :
     graph = [[0 for column in range(vertices)] for row in range(vertices)]
@@ -171,26 +205,30 @@ def userMain(driverName, driverTime, driverDistance, driverRating, driverScore):
     print("=====================================\n\n")
 
     print("Terdapat " + str(ojekCount(lokasiOjek)) + " ojek di sekitar.\n")
-    lokasiPenumpang = int(input("Masukkan node ke berapa Anda berada : "))
+    lokasiPenumpang = int(input("Pilih titik penjemputan (0-" + str(vertices - 1) + "): "))
     print("")
 
-    print("Array jumlah ojek di setiap node:")
-    print(lokasiOjek)
-    print("")
+    os.system('cls')
+    loadingScreen(5)
+    os.system('cls')
+
+    # print("Array jumlah ojek di setiap node:")
+    # print(lokasiOjek)
+    # print("")
 
     dijkstraAwal = dijkstra(lokasiPenumpang,vertices,mapFinal(vertices))
     dijkstraAkhir = [0 for i in range(vertices)]
 
-    print("Waktu tempuh dari setiap node ke titik penumpang (dalam s):")
-    print(dijkstraAwal)
-    print("")
+    # print("Waktu tempuh dari setiap node ke titik penumpang (dalam s):")
+    # print(dijkstraAwal)
+    # print("")
 
     dijkstraAkhir = zeroMaker(dijkstraAwal, dijkstraAkhir, lokasiOjek)
 
-    print("Waktu tempuh driver ke titik penumpang (dalam s):")
-    print(dijkstraAkhir)
-    print("")
-    print(lokasiOjek)
+    # print("Waktu tempuh driver ke titik penumpang (dalam s):")
+    # print(dijkstraAkhir)
+    # print("")
+    # print(lokasiOjek)
     mapDistanceInitial = dijkstra(lokasiPenumpang, vertices, map)
     mapDistanceFinal = [0 for i in range(vertices)]
     mapDistanceFinal = zeroMaker(mapDistanceInitial, mapDistanceFinal, lokasiOjek)
@@ -211,7 +249,7 @@ def userMain(driverName, driverTime, driverDistance, driverRating, driverScore):
     print("")
     print("\n\t   Program Selesai")
     print("=====================================")
-    print("Closing Program\n\n")
+    input("Closing Program\n\n")
 
 def ojekku(int) :
     print("Nama Driver  : " + str(driverName[int]), end='')
@@ -351,6 +389,8 @@ adminPassword = "admin"
 
 while True:
     os.system('cls')
+    loadingScreen(5)
+    os.system('cls')
     print("Program Mencari Ojek Online Sederhana")
     print("=====================================\n\n")
     userLoginFile.seek(0)
@@ -363,6 +403,8 @@ while True:
     print("3. Keluar dari Program")
     loginChoice = input("Masukkan Pilihan Anda : ")
     if loginChoice == "1" :
+        os.system('cls')
+        loadingScreen(5)
         os.system('cls')
         print("Program Mencari Ojek Online Sederhana")
         print("=====================================\n\n")
@@ -397,6 +439,8 @@ while True:
             print("Invalid Credentials")
             input("Press Enter")
     elif loginChoice == "2":
+        os.system('cls')
+        loadingScreen(5)
         os.system('cls')
         print("Program Mencari Ojek Online Sederhana")
         print("=====================================\n\n")
@@ -438,7 +482,7 @@ while True:
             input("Press Enter")
     elif loginChoice == "3" :
         print("\n\n=====================================")
-        print("Closing Program\n\n")
+        input("Closing Program\n\n")
         break
 
 userLoginFile.close()
