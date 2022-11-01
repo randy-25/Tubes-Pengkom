@@ -16,6 +16,10 @@ with open('namaOjek.txt') as namaOjekFile:
 with open('ratingOjek.txt') as ratingOjekFile:
     ratingTextInput = ratingOjekFile.readlines()
 
+# Prosedur untuk loading screen
+# Kamus Lokal :
+# duration : int
+# animation : list
 def loadingScreen(duration) :
     print("░█████╗░░░░░░░░░░░░██╗███████╗██╗░░██╗")
     print("██╔══██╗░░░░░░░░░░░██║██╔════╝██║░██╔╝")
@@ -49,6 +53,10 @@ def loadingScreen(duration) :
         time.sleep(duration / 100)
         count +=1
 
+# fungsi untuk membuat graph sebanyak vertices x vertices
+# Kamus Lokal
+# vertices : int
+# graph : list
 def graphMaker(vertices) :
     graph = [[0 for column in range(vertices)] for row in range(vertices)]
     return graph
@@ -65,82 +73,45 @@ def arrayLength(arr) :
         count += 1
     return count
     
+# deklarasi jumlah vertex dan map berupa list (matriks)
 vertices = verticesCount(arrayLength(mapTextInput))
-map = graphMaker(vertices)
+map = graphMaker(vertices) 
 
 for i in range(vertices**2) :
     map[i // vertices][i % vertices] = int(mapTextInput[i])
 
-# map = [[0, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#         [250, 0, 50, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#         [0, 50, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0],
-#         [0, 150, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#         [0, 0, 150, 50, 0, 0, 0, 0, 0, 100, 200, 150, 0, 0, 0, 0, 0, 0],
-#         [0, 0, 0, 50, 0, 0, 100, 150, 150, 100, 0, 0, 0, 0, 0, 0, 0, 0],
-#         [0, 0, 0, 0, 0, 100, 0, 150, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#         [0, 0, 0, 0, 0, 150, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#         [0, 0, 0, 0, 0, 150, 50, 0, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0],
-#         [0, 0, 0, 0, 100, 100, 0, 0, 200, 0, 150, 0, 0, 0, 0, 0, 250, 0],
-#         [0, 0, 0, 0, 200, 0, 0, 0, 0, 150, 0, 100, 0, 200, 150, 0, 150, 0],
-#         [0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
-#         [0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0, 0, 150, 0, 200, 0],
-#         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 150, 0, 0, 150, 0, 100, 150, 0],
-#         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0],
-#         [0, 0, 0, 0, 0, 0, 0, 0, 0, 250, 150, 0, 0, 200, 150, 0, 0,50],
-#         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0]]
-
+# Fungsi untuk mencari jarak minimal dari tempat asal ke suatu titik yang berhubungan dengan tempat asal
+# kamus lokal
+# min_index, vertices : int
+# min = float (min awal saat deklarasi)
 def minDistance(dist,sptSet,vertices) :
     min = 1e7
     for i in range(vertices) :
         if dist[i] < min and sptSet[i] == False :
             min = dist[i] 
             min_index = i
-    return min_index
+    return min_index #akan mereturn titik terdekat dari yang awal
 
-
+# fungsi untuk mencari jarak terdekat
+# Kamus lokal
+# src, vertices : int
+# dist, map, u, sptSet : list
 def dijkstra(src, vertices, map) :
     dist = [1e7]*vertices
     dist[src] = 0
     sptSet = [False] * vertices
-    '''
-    #DEBUG
-    print(sptSet)
-    print(dist)
-    '''
     for j in range(vertices) :
-        '''
-        #DEBUG
-        print()
-        print(dist)
-        print(sptSet)
-        '''
         # u pertama pasti sama dengan tempat asal
         u = minDistance(dist,sptSet,vertices)
-        # DEBUG
-        #print("u = ",u)
         sptSet[u] = True
         for k in range(vertices) :
-            '''
-            DEBUG
-            print(f"map[{u}][{k}]", map[u][k])
-            print(f"sptset[{k}]", sptSet[k])
-            print(f"dist[{k}]",dist[k])
-            print(f"dist[{u}] + map[{u}][{k}]", dist[u] + map[u][k])
-            '''
-            
             if map[u][k] > 0 and sptSet[k] == False and dist[k] > dist[u] + map[u][k] :
                 dist[k] = dist[u] + map[u][k]
-                '''
-                # DEBUG
-                print("jalan")
-                '''
-    return dist
+    return dist #akan mereturn array berisi jarak terdekat dari tempat asal
 
 def tempatOjek(vertices) :
     arrayOjek = [0 for i in range (vertices)]
     for i in range (vertices) :
-        #jumlah = int(input(f"Masukkan jumlah ojek di node ke-{i}: "))
         jumlah = int(ojekTextInput[i])
         arrayOjek[i] = jumlah
     return arrayOjek
@@ -159,20 +130,27 @@ def mapFinal(vertices) :
                 count += 1
     return mapFinal
 
+# fungsi untuk menghitung jumlah ojek yang ada pada tiap titik
+# kamus Lokal
+# lokasiOjek : list
+# count : int
 def ojekCount(lokasiOjek) :
     count = 0
     for i in lokasiOjek :
         if (i != 0) :
             count += i
-    return count
+    return count # mereturn banyak ojek yang ada
 
+# Fungsi untuk mengubah isi array sehingga titik yang tidak ada ojek berubah nilai menjadi 0
+# Kamus lokal
+# dijkstraInitial, dijkstraFinal, lokasiOjek : list
 def zeroMaker(dijkstraInitial, dijkstraFinal, lokasiOjek) :
     for i in range (vertices):
         if lokasiOjek[i] == 0:
             dijkstraFinal[i] = 0
         else :
             dijkstraFinal[i] = dijkstraInitial[i]
-    return dijkstraFinal
+    return dijkstraFinal #akan mereturn map akhir yang mana jarak terdekatnya hanya tempat tempat yang ada ojeknya
 
 def getBestIndex(driverScore) :
     temp = 0
@@ -187,8 +165,6 @@ def driverDetail(driverName, driverTime, driverDistance, driverRating, driverSco
     for i in range(vertices) :
         if (lokasiOjek[i] != 0) :
             for j in range(lokasiOjek[i]) :
-                # driverName[driverIndex] = input("Nama driver " + str(j + 1) + " di node " + str(i) + ": ")
-                # driverRating[driverIndex] = float(input("Rating: "))
                 driverName[driverIndex] = nameTextInput[driverIndex]
                 driverRating[driverIndex] = float(ratingTextInput[driverIndex])
                 driverDistance[driverIndex] = mapDistanceFinal[i]
@@ -199,6 +175,11 @@ def driverDetail(driverName, driverTime, driverDistance, driverRating, driverSco
                 driverScore[driverIndex] = driverRating[driverIndex] + 10 / driverTime[driverIndex]
                 driverIndex += 1
 
+# Prosedur untuk menampilkan menu user
+# Kamus Lokal
+# driverName, driverTime, driverDistance, driverRating, driverScore, dijkstraAwal, dijkstraAkhir, mapDistanceInitial, mapDistanceFinal : list
+# lokasiPenumpang : int
+# strTime : str
 def userMain(driverName, driverTime, driverDistance, driverRating, driverScore):
     os.system('cls')
     print("Program Mencari Ojek Online Sederhana")
@@ -212,23 +193,11 @@ def userMain(driverName, driverTime, driverDistance, driverRating, driverScore):
     loadingScreen(5)
     os.system('cls')
 
-    # print("Array jumlah ojek di setiap node:")
-    # print(lokasiOjek)
-    # print("")
-
     dijkstraAwal = dijkstra(lokasiPenumpang,vertices,mapFinal(vertices))
     dijkstraAkhir = [0 for i in range(vertices)]
 
-    # print("Waktu tempuh dari setiap node ke titik penumpang (dalam s):")
-    # print(dijkstraAwal)
-    # print("")
-
     dijkstraAkhir = zeroMaker(dijkstraAwal, dijkstraAkhir, lokasiOjek)
 
-    # print("Waktu tempuh driver ke titik penumpang (dalam s):")
-    # print(dijkstraAkhir)
-    # print("")
-    # print(lokasiOjek)
     mapDistanceInitial = dijkstra(lokasiPenumpang, vertices, map)
     mapDistanceFinal = [0 for i in range(vertices)]
     mapDistanceFinal = zeroMaker(mapDistanceInitial, mapDistanceFinal, lokasiOjek)
@@ -251,6 +220,9 @@ def userMain(driverName, driverTime, driverDistance, driverRating, driverScore):
     print("=====================================")
     input("Closing Program\n\n")
 
+# prosedur untuk menampilkan ojek ( debug pada menu admin )
+# Kamus Lokal 
+# int : int
 def ojekku(int) :
     print("Nama Driver  : " + str(driverName[int]), end='')
     print("Rating       : " + str(driverRating[int]) + "/5")
@@ -335,6 +307,10 @@ def updateDriver(vertices) :
         with open('ratingOjek.txt', 'w') as a :
             a.write(driverRating)
 
+# Prosedur untuk menampilkan menu admin
+# Kamus Lokal
+# driverName, driverTime, driverDistance, driverRating, driverScore, dijkstraAwal, dijkstraAkhir, mapDistanceInitial, mapDistanceFinal : list
+# lokasiPenumpang : int
 def adminMain(driverName, driverTime, driverDistance, driverRating, driverScore):
     os.system('cls')
     print("Program Mencari Ojek Online Sederhana")
@@ -372,7 +348,7 @@ def adminMain(driverName, driverTime, driverDistance, driverRating, driverScore)
         print("")
     input("\n\nPress Enter")
 
-lokasiOjek = tempatOjek(vertices)
+lokasiOjek = tempatOjek(vertices) # deklarasi array lokasi ojek
 
 # Deklarasi array untuk driver ojek
 driverName = ['' for i in range(ojekCount(lokasiOjek))]
@@ -384,25 +360,27 @@ driverScore = ['' for i in range(ojekCount(lokasiOjek))]
 userLoginFile = open("loginUser.txt","a+")
 userPasswordFile = open("passwordUser.txt","a+")
 
-adminLogin = "admin"
+adminLogin = "admin" # untuk login admin tidak dibuat database sehingga akun dan password hanya admin dan admin
 adminPassword = "admin"
 
-while True:
+# Perulangan untuk menu ojek (login admin, login user, dll)
+while True: 
     os.system('cls')
     loadingScreen(5)
     os.system('cls')
     print("Program Mencari Ojek Online Sederhana")
     print("=====================================\n\n")
-    userLoginFile.seek(0)
+    userLoginFile.seek(0) #seek 0 agar kursor pada external file tetap di awal sehingga dapat digunakan untuk mencari mana yang tepat
     loginUser = userLoginFile.readlines()
     userPasswordFile.seek(0)
     passwordUser = userPasswordFile.readlines()
     
+    # menu pilihan login
     print("1. Login Admin")
     print("2. Login User")
     print("3. Keluar dari Program")
     loginChoice = input("Masukkan Pilihan Anda : ")
-    if loginChoice == "1" :
+    if loginChoice == "1" : # menu login admin
         os.system('cls')
         loadingScreen(5)
         os.system('cls')
@@ -438,7 +416,7 @@ while True:
         else :
             print("Invalid Credentials")
             input("Press Enter")
-    elif loginChoice == "2":
+    elif loginChoice == "2": #menu login user
         os.system('cls')
         loadingScreen(5)
         os.system('cls')
