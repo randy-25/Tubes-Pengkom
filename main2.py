@@ -137,26 +137,34 @@ def dijkstra(src, vertices, map) :
                 '''
     return dist
 
+# Fungsi untuk mengambil data jumlah ojek di setiap titik
+# KAMUS LOKAL
+# vertices, jumlah : int
+# arrayOjek : arr of int
 def tempatOjek(vertices) :
-    arrayOjek = [0 for i in range (vertices)]
-    for i in range (vertices) :
+    arrayOjek = [0 for i in range (vertices)] # -- deklarasi array untuk menyimpan data jumlah ojek di setiap titik
+    for i in range (vertices) : # -- loop untuk mengambil data jumlah ojek di setiap titik dari 'jumlah ojek.txt'
         #jumlah = int(input(f"Masukkan jumlah ojek di node ke-{i}: "))
         jumlah = int(ojekTextInput[i])
         arrayOjek[i] = jumlah
     return arrayOjek
 
+# Fungsi untuk memproses matriks map jarak dengan keramaian untuk mendapatkan matriks berupa waktu tempuh dari setiap titik
+# KAMUS LOKAL
+# vertices, count, roadAVGSpeed : int
+# mapFinal : arr of int
 def mapFinal(vertices) :
-    mapFinal = graphMaker(vertices)
+    mapFinal = graphMaker(vertices) # -- deklarasi matriks untuk map yang telah diproses
     #print("\nKecepatan rata-rata kendaraan pada jalan berdasarkan keramaian: ")
-    count = 0
-    for i in range(vertices) :
+    count = 0 # -- penghitung indeks untuk data yang didapat dari 'keramaian.txt'
+    for i in range(vertices) : # -- melakukan loop untuk dapat mengakses semua indeks pada matriks
         for j in range(vertices) :
-            if (map[i][j] != 0 and mapFinal[i][j] == 0) :
+            if (map[i][j] != 0 and mapFinal[i][j] == 0) : # -- memenuhi ketika titik-titik terhubung di map dan ketika mapFinal[i][j] masih bernilai nol
                 # roadAVGSpeed = int(input("Kecepatan rata-rata di titik " + str(i) + " ke " + str(j) + " (dalam km/jam): ")) * 1000 / 3600
-                roadAVGSpeed = int(roadTextInput[count]) * 1000 / 3600
-                mapFinal[i][j] = int(map[i][j] / roadAVGSpeed)
-                mapFinal[j][i] = mapFinal[i][j]
-                count += 1
+                roadAVGSpeed = int(roadTextInput[count]) * 1000 / 3600 # -- mendapat input dari 'keramaian.txt'
+                mapFinal[i][j] = int(map[i][j] / roadAVGSpeed) # -- memproses map jarak dengan keramaian sehingga menghasilkan waktu tempuh
+                mapFinal[j][i] = mapFinal[i][j] # -- diasumsikan pada jalan yang sama memiliki waktu tempuh yang sama pada kedua arah
+                count += 1 # -- menambah satu untuk mengakses indeks selanjutnya pada 'keramaian.txt'
     return mapFinal
 
 def ojekCount(lokasiOjek) :
@@ -174,6 +182,10 @@ def zeroMaker(dijkstraInitial, dijkstraFinal, lokasiOjek) :
             dijkstraFinal[i] = dijkstraInitial[i]
     return dijkstraFinal
 
+# Fungsi untuk mencari skor terbesar yang dimiliki ojek-ojek yang tersedia
+# KAMUS LOKAL
+# temp : int
+# driverScore : arr of float
 def getBestIndex(driverScore) :
     temp = 0
     for i in range(ojekCount(lokasiOjek)) :
@@ -259,14 +271,19 @@ def ojekku(int) :
     print("Jarak        : " + str(driverDistance[int]) + "m")
     print("Overall score: " + str(driverScore[int]))
 
+# Prosedur untuk memperbarui input map yang digunakan program
+# KAMUS LOKAL
+# vertices, graphInput1, graphInput2, distanceInput : int
+# mapText, confirmInput : str
+# graph : arr of int
 def updateMap(vertices) :
     os.system('cls')
     print("Updating Map")
     print("============\n\n")
-    mapText = ''
-    graph = graphMaker(vertices)
+    mapText = '' # -- deklarasi default str mapText
+    graph = graphMaker(vertices) # -- deklarasi matriks graph
 
-    graphInput1 = 0
+    graphInput1 = 0 # -- deklarasi default agar kondisi loop memenuhi
     while (graphInput1 != -1) :
         print("Ketik -1 pada titik 1 untuk mengakhiri input")
         graphInput1 = int(input("Masukkan titik 1: "))
@@ -274,38 +291,51 @@ def updateMap(vertices) :
             graphInput2 = int(input("Masukkan titik 2: "))
             distanceInput = int(input("Masukkan jarak: "))
             print("")
+            # -- diasumsikan jarak dua titik dari kedua arah yang berlawanan memiliki jarak yang sama
             graph[graphInput1][graphInput2] = distanceInput
             graph[graphInput2][graphInput1] = distanceInput
 
+    # -- mengakses setiap indeks pada graph untuk di assign pada str mapText
     for i in range(vertices) :
         for j in range(vertices) :
             mapText += str(graph[i][j]) + "\n"
 
     confirmInput = input("Perbarui data map? (YA / TIDAK) : ")
 
+    # -- jika kondisi dipenuhi maka 'map.txt' akan di overwrite
     if confirmInput == "YA" :
         with open('map.txt', 'w') as mapFile :
             mapFile.write(mapText)
     
+    # -- memanggil prosedur updateSpeed() dan updateDriver() dikarenakan diperlukan data keramaian dan driver yang baru pada map yang berbeda
     updateSpeed(vertices)
     updateDriver(vertices)
 
+# Prosedur untuk memperbarui keramaian pada jalan berupa kecepatan rata-rata pada jalan tersebut
+# KAMUS LOKAL
+# vertices : int
+# roadAVGSpeed, confirmInput : str
 def updateSpeed(vertices) :
     os.system('cls')
     print("Updating Keramaian")
     print("==================\n\n")
-    roadAVGSpeed = ""
+    roadAVGSpeed = "" # -- deklarasi awal str roadAVGSpeed
     for i in range(vertices) :
         for j in range(vertices) :
-            if (map[i][j] != 0 and j > i) :
+            if (map[i][j] != 0 and j > i) : # -- mengambil input ketika suatu titik terhubung pada map dan ketika indeks j lebih besar dari i sehingga tidak diperlukan pengulangan untuk mengakses jalan yang sama dari arah berlawanan
                 roadAVGSpeed += input("Kecepatan rata-rata di titik " + str(i) + " ke " + str(j) + " (dalam km/jam): ") + "\n"
     
     confirmInput = input("Perbarui data keramaian? (YA / TIDAK) : ")
 
+    # -- mengecek konfirmasi untuk overwrite 'keramaian.txt'
     if confirmInput == "YA" :
         with open('keramaian.txt', 'w') as a :
             a.write(roadAVGSpeed)
 
+# Prosedur untuk memperbarui detail-detail driver (Jumlah driver pada suatu titik, nama driver, rating driver, dll)
+# KAMUS LOKAL
+# vertices, driverIndex, ojekCount : int
+# driverName, driverRating, jumlah : str
 def updateDriver(vertices) :
     os.system('cls')
     print("Updating Driver")
@@ -314,10 +344,11 @@ def updateDriver(vertices) :
     driverName = ""
     driverRating = ""
     jumlah = ""
+    # -- mengakses indeks untuk setiap titik pada map
     for i in range(vertices) :
         ojekCount = int(input(f"Masukkan jumlah ojek di node ke-{i}: "))
         jumlah += str(ojekCount) + "\n"
-        if (ojekCount != 0) :
+        if (ojekCount != 0) : # -- jika ditemukan ojek pada suatu titik, maka akan diminta detail dari setiap driver yang ada di titik itu
             for j in range(ojekCount) :
                 driverName += input("Nama driver " + str(j + 1) + " di node " + str(i) + ": ") + "\n"
                 driverRating += input("Rating: ") + "\n"
@@ -326,6 +357,7 @@ def updateDriver(vertices) :
 
     confirmInput = input("Perbarui data driver? (YA / TIDAK) : ")
 
+    # -- mengecek konfirmasi untuk overwrite 'jumlah ojek.txt', 'namaOjek.txt', dan 'ratingOjek.txt'
     if confirmInput == "YA" :
         with open('jumlah ojek.txt', 'w') as a :
             a.write(jumlah)
