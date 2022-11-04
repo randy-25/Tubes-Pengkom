@@ -1,3 +1,14 @@
+# Program Mencari Ojek Online Terbaik Berdasarkan Jarak, Keramaian, dan Rating Driver
+
+# Kamus Global
+# vertices : int
+# map : list
+# lokasiOjek, driverName, driverTime, driverDistance, driverRating, driverScore : list
+# loginChoice : str
+# adminLogin, adminPassword, adminUser, adminPass, adminChoice : str
+# userChoice, user, password : str
+# counting : int
+
 import os
 import time
 
